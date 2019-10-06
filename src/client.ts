@@ -40,12 +40,4 @@ export default class {
   public post = (path: string, args: ClientArgs) => this.call(path, 'POST', args)
 
   public get = (path: string, args: ClientArgs) => this.call(path, 'GET', args)
-
-  public getUrl = () => {
-    return this.defaults.url
-  }
-
-  public getHeaders = () => {
-    return this.defaults.headers
-  }
 }
