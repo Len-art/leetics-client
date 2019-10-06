@@ -7,7 +7,6 @@
     "typescript": "^3.6.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.3.2",
     "@typescript-eslint/parser": "^2.3.2",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
@@ -18,6 +17,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "tsc": "^1.20150623.0",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
     "nodemon": "^1.19.3",
     "prettier": "^1.18.2"
   },
@@ -26,11 +26,15 @@
     "build": "yarn tsc"
   },
   "description": "Client for Leetics, the lightweight and independent analytics service.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [
     "leetics",
     "leetics-client"
   ],
   "author": "Len Art <lenart.velkavrh@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "files": [
+    "lib/**/*"
+  ]
 }
