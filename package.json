@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@types/detect-browser": "^4.0.0",
+    "detect-browser": "^4.7.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
     "@typescript-eslint/parser": "^2.3.2",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
@@ -16,14 +19,13 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "tsc": "^1.20150623.0",
-    "@typescript-eslint/eslint-plugin": "^2.3.2",
     "nodemon": "^1.19.3",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "tsc": "^1.20150623.0"
   },
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build": "yarn tsc"
+    "build": "yarn tsc",
+    "watch": "yarn tsc -w"
   },
   "description": "Client for Leetics, the lightweight and independent analytics service.",
   "main": "lib/index.js",

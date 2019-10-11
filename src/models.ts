@@ -1,11 +1,13 @@
 export interface ClientSettings {
-  url: string
-  headers: {
-    Accept: string
-    'Content-Type': string
-  }
+  prefix: string
 }
 
 export interface ClientArgs {
-  [key: string]: string
+  [key: string]: string | number | undefined
+}
+
+export enum EventTypes {
+  alive = 1,
+  click,
+  navigation,
 }

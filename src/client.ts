@@ -1,43 +1,47 @@
 import { ClientSettings, ClientArgs } from './models'
 
 export default class {
-  private defaults: ClientSettings = {
-    url: 'https://len-art.tech/api',
+  private prefix: string = 'https://len-art.tech/api'
+  private defaults: RequestInit = {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   }
 
-  constructor(settings?: Partial<ClientSettings>) {
-    this.defaults = { ...this.defaults, ...settings }
+  constructor(settings?: ClientSettings) {
+    if (settings) {
+      this.prefix = settings.prefix
+    }
   }
 
-  private call = async (path: string, method: 'GET' | 'POST', args: ClientArgs) =>
+  private call = async <R>(path: string, method: 'GET' | 'POST', args?: ClientArgs): Promise<R> =>
     new Promise(async (res, rej) => {
       try {
-        const { url, headers } = this.defaults
-        const response = await fetch(`${url}/${path}`, {
+        const request = await new Request(`${this.prefix}/${path}`, {
           method,
-          headers,
+          ...this.defaults,
           body: JSON.stringify(args),
         })
+        const response = await fetch(request)
 
         const contentLength = response.headers.get('Content-Length')
         if (!contentLength) {
           res()
         }
-
         if (response.ok) {
-          res(await response.json())
+          const text = await response.text()
+          if (text.length) {
+            res(await JSON.parse(text))
+          } else res()
         } else {
           const { message } = await response.json()
           throw new Error(message)
         }
       } catch (error) {
-        console.log(error)
+        console.error(error)
         rej(error)
       }
     })
 
-  public post = (path: string, args: ClientArgs) => this.call(path, 'POST', args)
+  public post = <R>(path: string, args?: ClientArgs): Promise<R> => this.call<R>(path, 'POST', args)
 
-  public get = (path: string, args: ClientArgs) => this.call(path, 'GET', args)
+  public get = <R>(path: string, args?: ClientArgs): Promise<R> => this.call(path, 'GET', args)
 }
