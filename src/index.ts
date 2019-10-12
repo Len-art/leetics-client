@@ -2,6 +2,8 @@ import Client from './client'
 import getContext from './context'
 import { ClientSettings, EventTypes, EventData } from './models'
 
+// TODO: add debug mode with logging
+
 export default class LeeticsClient {
   public appId: number
 
@@ -11,13 +13,16 @@ export default class LeeticsClient {
 
   private idleTimer?: number
 
-  private pingInterval = 6 * 1000
+  private pingInterval = 60 * 1000
 
-  private isFocused: boolean = document.hasFocus()
+  private isFocused: boolean = false
 
   private waitingEvents: EventData[] = []
 
   constructor(appId: number, clientSettings?: ClientSettings) {
+    if (typeof window !== 'undefined') {
+      this.isFocused = document.hasFocus()
+    }
     //TODO: unify this as a one config object
     this.appId = appId
     this.client = new Client(clientSettings)
