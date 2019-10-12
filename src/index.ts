@@ -1,6 +1,6 @@
 import Client from './client'
 import getContext from './context'
-import { ClientSettings, EventTypes } from './models'
+import { ClientSettings, EventTypes, EventData } from './models'
 
 export default class LeeticsClient {
   public appId: number
@@ -15,6 +15,8 @@ export default class LeeticsClient {
 
   private isFocused: boolean = document.hasFocus()
 
+  private waitingEvents: EventData[] = []
+
   constructor(appId: number, clientSettings?: ClientSettings) {
     //TODO: unify this as a one config object
     this.appId = appId
@@ -28,13 +30,29 @@ export default class LeeticsClient {
 
       this.setFocusListeners()
       this.startPing()
+      this.sendIfWaiting()
     } catch (error) {}
   }
 
   /* this is what should be used by the user */
-  public send = async (args: { event: EventTypes; value?: string }) => {
+  public send = async (args: EventData) => {
+    if (!this.visitId) {
+      this.waitingEvents.push(args)
+      return
+    }
     try {
       await this.sendEvent(args)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  private sendIfWaiting = async () => {
+    try {
+      this.waitingEvents.reduce(async (acc, args) => {
+        await acc
+        return this.send(args)
+      }, Promise.resolve())
     } catch (error) {
       console.error(error)
     }
