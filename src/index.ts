@@ -53,6 +53,7 @@ export default class LeeticsClient {
         await acc
         return this.send(args)
       }, Promise.resolve())
+      this.waitingEvents = []
     } catch (error) {
       console.error(error)
     }
