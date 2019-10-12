@@ -29,14 +29,10 @@ export default class LeeticsClient {
     this.init()
   }
 
-  private init = async () => {
-    try {
-      await this.sendVisit()
+  private init = () => {
+    this.sendVisit()
 
-      this.setFocusListeners()
-      this.startPing()
-      this.sendIfWaiting()
-    } catch (error) {}
+    this.setFocusListeners()
   }
 
   /* this is what should be used by the user */
@@ -65,12 +61,18 @@ export default class LeeticsClient {
   }
 
   private sendVisit = async () => {
-    const context = getContext()
-    const data = await this.client.post<{ visitId: string }>(`visit/${this.appId}`, {
-      guestId: 'this is guest id',
-      ...context,
-    })
-    this.visitId = data.visitId
+    try {
+      const context = getContext()
+      const data = await this.client.post<{ visitId: string }>(`visit/${this.appId}`, {
+        guestId: 'this is guest id',
+        ...context,
+      })
+      this.visitId = data.visitId
+      this.startPing()
+      this.sendIfWaiting()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   private setFocusListeners() {
