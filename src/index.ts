@@ -1,13 +1,17 @@
 import Client from './client'
 import getContext from './context'
-import { ClientSettings, EventTypes, EventData } from './models'
+import { ClientSettings, EventTypes, EventData, Config } from './models'
 
 // TODO: add debug mode with logging
 
 export default class LeeticsClient {
-  public appId: number
+  public appId: string
 
   public visitId?: string
+
+  private config: Config = {
+    preventOnKill: false,
+  }
 
   private client: Client
 
@@ -19,9 +23,15 @@ export default class LeeticsClient {
 
   private waitingEvents: EventData[] = []
 
-  constructor(appId: number, clientSettings?: ClientSettings) {
+  constructor(appId: string, clientSettings?: ClientSettings, config?: Config) {
     if (typeof window !== 'undefined') {
       this.isFocused = document.hasFocus()
+    }
+    if (typeof appId !== 'string' || appId.length === 0) {
+      throw new Error('App ID argument is required')
+    }
+    if (config) {
+      this.config = { ...this.config, ...config }
     }
     //TODO: unify this as a one config object
     this.appId = appId
@@ -31,8 +41,8 @@ export default class LeeticsClient {
 
   private init = () => {
     this.sendVisit()
-
     this.setFocusListeners()
+    this.setUpOnKill()
   }
 
   /* this is what should be used by the user */
@@ -46,6 +56,16 @@ export default class LeeticsClient {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  private setUpOnKill = () => {
+    if (!this.config.preventOnKill) {
+      window.addEventListener('beforeunload', this.onKill)
+    }
+  }
+
+  public onKill = () => {
+    this.sendEvent({ event: EventTypes.killed })
   }
 
   private sendIfWaiting = async () => {
@@ -104,7 +124,7 @@ export default class LeeticsClient {
   private startPing = () => {
     this.idleTimer = window.setTimeout(async () => {
       try {
-        if (!this.appId || !this.isFocused) {
+        if (!this.isFocused) {
           this.idleTimer = undefined
           return
         }
