@@ -5,7 +5,7 @@ import { ClientSettings, EventTypes, EventData } from './models'
 // TODO: add debug mode with logging
 
 export default class LeeticsClient {
-  public appId: number
+  public appId: string
 
   public visitId?: string
 
@@ -19,7 +19,7 @@ export default class LeeticsClient {
 
   private waitingEvents: EventData[] = []
 
-  constructor(appId: number, clientSettings?: ClientSettings) {
+  constructor(appId: string, clientSettings?: ClientSettings) {
     if (typeof window !== 'undefined') {
       this.isFocused = document.hasFocus()
     }
