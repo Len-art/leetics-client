@@ -33,7 +33,7 @@ export default class LeeticsClient {
     if (config) {
       this.config = { ...this.config, ...config }
     }
-    //TODO: unify this as a one config object
+    // TODO: unify this as a one config object
     this.appId = appId
     this.client = new Client(clientSettings)
     this.init()

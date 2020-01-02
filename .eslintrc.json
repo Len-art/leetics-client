@@ -16,6 +16,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "semi": "off",
-    "strict": "error"
+    "strict": "error",
+    "no-unused-vars": "warn"
   }
 }
