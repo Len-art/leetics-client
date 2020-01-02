@@ -1,7 +1,6 @@
 {
   "name": "leetics-client",
   "version": "0.5.0",
-  "private": true,
   "dependencies": {
     "@types/detect-browser": "^4.0.0",
     "detect-browser": "^4.8.0",
@@ -34,7 +33,7 @@
     "leetics-client"
   ],
   "author": "Len Art <lenart.velkavrh@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "files": [
     "lib/**/*"
   ]
