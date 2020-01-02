@@ -1,6 +1,6 @@
 {
   "name": "leetics-client",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "private": true,
   "dependencies": {
     "@types/detect-browser": "^4.0.0",
