@@ -23,15 +23,12 @@ export default class LeeticsClient {
 
   private waitingEvents: EventData[] = []
 
-  constructor(appId: string, clientSettings?: ClientSettings, config?: Config) {
+  constructor(appId: string, clientSettings?: ClientSettings) {
     if (typeof window !== 'undefined') {
       this.isFocused = document.hasFocus()
     }
     if (typeof appId !== 'string' || appId.length === 0) {
       throw new Error('App ID argument is required')
-    }
-    if (config) {
-      this.config = { ...this.config, ...config }
     }
     // TODO: unify this as a one config object
     this.appId = appId
