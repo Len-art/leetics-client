@@ -1,5 +1,6 @@
 import Client from './client'
 import getContext from './context'
+import GuestIdentification from './guestIdentification'
 import { ClientSettings, EventTypes, EventData, Config } from './models'
 
 // TODO: add debug mode with logging
@@ -8,6 +9,8 @@ export default class LeeticsClient {
   public appId: string
 
   public visitId?: string
+
+  public guestIdentification: GuestIdentification
 
   private config: Config = {
     preventOnKill: false,
@@ -19,7 +22,7 @@ export default class LeeticsClient {
 
   private pingInterval = 60 * 1000
 
-  private isFocused: boolean = false
+  private isFocused = false
 
   private waitingEvents: EventData[] = []
 
@@ -33,6 +36,7 @@ export default class LeeticsClient {
     // TODO: unify this as a one config object
     this.appId = appId
     this.client = new Client(clientSettings)
+    this.guestIdentification = new GuestIdentification(this)
     this.init()
   }
 
@@ -45,6 +49,7 @@ export default class LeeticsClient {
   /* this is what should be used by the user */
   public send = async (args: EventData) => {
     if (!this.visitId) {
+      /* hold off with updates until visitId is received */
       this.waitingEvents.push(args)
       return
     }
@@ -81,7 +86,7 @@ export default class LeeticsClient {
     try {
       const context = getContext()
       const data = await this.client.post<{ visitId: string }>(`visit/${this.appId}`, {
-        guestId: 'this is guest id',
+        guestId: this.guestIdentification.guestId,
         ...context,
       })
       this.visitId = data.visitId

@@ -12,6 +12,7 @@ export interface ClientArgs {
 
 export interface EventData {
   event: EventTypes
+  guestId?: string
   value?: string
 }
 
@@ -20,4 +21,5 @@ export enum EventTypes {
   click,
   navigation,
   killed,
+  guestIdentified,
 }

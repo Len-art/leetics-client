@@ -1,7 +1,7 @@
 import { ClientSettings, ClientArgs } from './models'
 
 export default class {
-  private prefix: string = 'https://len-art.tech/api'
+  private prefix = 'https://len-art.tech/api'
   private defaults: RequestInit = {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   }
