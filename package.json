@@ -1,6 +1,6 @@
 {
   "name": "leetics-client",
-  "version": "0.5.1",
+  "version": "0.5.5",
   "dependencies": {
     "@types/detect-browser": "^4.0.0",
     "@types/shortid": "^0.0.29",
@@ -25,6 +25,7 @@
   },
   "scripts": {
     "build": "yarn tsc",
+    "publish": "npm publish",
     "watch": "yarn tsc -w"
   },
   "description": "Client for Leetics, the lightweight and independent analytics service.",
